@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow Ways - Travel with Confidence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ... (previous CSS remains the same) ... */
+
+        /* Slideshow Styles */
+        .hero-slideshow {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 13, 255, 0.5), rgba(0, 0, 0, 0.5));
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-navigation {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .slide-dot.active {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section (remains the same) -->
+    <header>
+        <!-- ... (previous header code) ... -->
+    </header>
+
+    <!-- Hero Slideshow Section -->
+    <section class="hero-slideshow">
+        <div class="slide active" style="background-image: url('images/airplane-illustration.jpg')">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Welcome to Arrow Ways</h1>
+                <p>Your gateway to unforgettable travel experiences. Explore the world with confidence and comfort.</p>
+                <a href="booking.php" class="cta-button">Book Your Flight</a>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('images/business-class.jpg')">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Luxury in the Skies</h1>
+                <p>Experience our new Business Class Suite. Comfort, style, and convenience at new heights.</p>
+                <a href="booking.php" class="cta-button">Explore Business Class</a>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('images/sunset-flight.jpg')">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Your Journey Begins Here</h1>
+                <p>Discover destinations beyond your imagination. Every flight is the start of a new adventure.</p>
+                <a href="booking.php" class="cta-button">Start Your Journey</a>
+            </div>
+        </div>
+        
+        <div class="slide-navigation">
+            <div class="slide-dot active" data-slide="0"></div>
+            <div class="slide-dot" data-slide="1"></div>
+            <div class="slide-dot" data-slide="2"></div>
+        </div>
+    </section>
+
+    <!-- Remaining sections (About, Features, Footer) remain the same -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slide-dot');
+            let currentSlide = 0;
+
+            function changeSlide(newSlide) {
+                // Remove active class from current slide and dot
+                slides[currentSlide].classList.remove('active');
+                dots[currentSlide].classList.remove('active');
+
+                // Add active class to new slide and dot
+                slides[newSlide].classList.add('active');
+                dots[newSlide].classList.add('active');
+
+                currentSlide = newSlide;
+            }
+
+            // Auto-slide functionality
+            function autoSlide() {
+                let nextSlide = (currentSlide + 1) % slides.length;
+                changeSlide(nextSlide);
+            }
+
+            // Auto-slide every 5 seconds
+            let slideInterval = setInterval(autoSlide, 5000);
+
+            // Manual slide navigation with dots
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const slideIndex = parseInt(this.dataset.slide);
+                    changeSlide(slideIndex);
+                    
+                    // Reset interval when manually navigating
+                    clearInterval(slideInterval);
+                    slideInterval = setInterval(autoSlide, 5000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

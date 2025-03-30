@@ -1,0 +1,439 @@
+<?php
+
+
+// Check if user is logged in
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header("Location: Registrationform.html");
+    exit();
+}
+
+// Get flight details from URL
+$flightId = $_GET['flightId'] ?? '';
+$price = $_GET['price'] ?? 0;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Arrow Ways</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0047AB;
+            --secondary-color: #4169E1;
+            --accent-color: #1E90FF;
+            --text-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-container {
+            background-color: white;
+            width: 500px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .payment-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .payment-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .card-details {
+            display: flex;
+            gap: 15px;
+        }
+
+        .card-details > div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h2>Complete Your Payment</h2>
+            <p>Flight ID: <?php echo htmlspecialchars($flightId); ?></p>
+            <p>Total Price: $<?php echo number_format($price, 2); ?></p>
+        </div>
+        <form class="payment-form" id="paymentForm">
+            <div class="form-group">
+                <label for="card-name">Cardholder Name</label>
+                <input type="text" id="card-name" name="card-name" required>
+            </div>
+            <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div class="card-details">
+                <div class="form-group">
+                    <label for="expiry">Expiry Date</label>
+                    <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                </div>
+            </div>
+            <button type="submit" class="payment-btn">Pay Now</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simulate payment processing
+            alert('Payment Successful! Thank you for booking with Arrow Ways.');
+            window.location.href = 'bookingconformpage.php';
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Arrow Ways</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0047AB;
+            --secondary-color: #4169E1;
+            --accent-color: #1E90FF;
+            --text-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-container {
+            background-color: white;
+            width: 600px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .payment-method {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary-color);
+            background-color: #f0f4ff;
+        }
+
+        .payment-method img {
+            max-width: 80px;
+            max-height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .payment-method-name {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .credit-card-form, 
+        .upi-form,
+        .bank-form {
+            display: none;
+        }
+
+        .active-form {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .payment-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .payment-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .card-details {
+            display: flex;
+            gap: 15px;
+        }
+
+        .card-details > div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h2>Complete Your Payment</h2>
+            <p>Flight ID: <?php echo htmlspecialchars($flightId); ?></p>
+            <p>Total Price: $<?php echo number_format($price, 2); ?></p>
+        </div>
+
+        <div class="payment-methods">
+            <div class="payment-method" data-method="credit-card">
+                <img src="/api/placeholder/100/50?text=Credit+Card" alt="Credit Card">
+                <div class="payment-method-name">Credit Card</div>
+            </div>
+            <div class="payment-method" data-method="debit-card">
+                <img src="/api/placeholder/100/50?text=Debit+Card" alt="Debit Card">
+                <div class="payment-method-name">Debit Card</div>
+            </div>
+            <div class="payment-method" data-method="net-banking">
+                <img src="/api/placeholder/100/50?text=Net+Banking" alt="Net Banking">
+                <div class="payment-method-name">Net Banking</div>
+            </div>
+            <div class="payment-method" data-method="google-pay">
+                <img src="/api/placeholder/100/50?text=Google+Pay" alt="Google Pay">
+                <div class="payment-method-name">Google Pay</div>
+            </div>
+            <div class="payment-method" data-method="phone-pay">
+                <img src="/api/placeholder/100/50?text=Phone+Pay" alt="Phone Pay">
+                <div class="payment-method-name">Phone Pay</div>
+            </div>
+            <div class="payment-method" data-method="paytm">
+                <img src="/api/placeholder/100/50?text=Paytm" alt="Paytm">
+                <div class="payment-method-name">Paytm</div>
+            </div>
+            <div class="payment-method" data-method="paypal">
+                <img src="/api/placeholder/100/50?text=PayPal" alt="PayPal">
+                <div class="payment-method-name">PayPal</div>
+            </div>
+            <div class="payment-method" data-method="fampay">
+                <img src="/api/placeholder/100/50?text=FamPay" alt="FamPay">
+                <div class="payment-method-name">FamPay</div>
+            </div>
+            <div class="payment-method" data-method="bank-transfer">
+                <img src="/api/placeholder/100/50?text=Bank+Transfer" alt="Bank Transfer">
+                <div class="payment-method-name">Bank Transfer</div>
+            </div>
+        </div>
+
+        <!-- Credit Card Form -->
+        <form id="creditCardForm" class="credit-card-form form-group">
+            <div class="form-group">
+                <label for="card-name">Cardholder Name</label>
+                <input type="text" id="card-name" name="card-name" required>
+            </div>
+            <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div class="card-details">
+                <div class="form-group">
+                    <label for="expiry">Expiry Date</label>
+                    <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                </div>
+            </div>
+            <button type="submit" class="payment-btn">Pay with Credit Card</button>
+        </form>
+
+        <!-- UPI Form -->
+        <form id="upiForm" class="upi-form form-group">
+            <div class="form-group">
+                <label for="upi-id">UPI ID</label>
+                <input type="text" id="upi-id" name="upi-id" placeholder="yourname@upi" required>
+            </div>
+            <button type="submit" class="payment-btn">Pay via UPI</button>
+        </form>
+
+        <!-- Net Banking Form -->
+        <form id="netBankingForm" class="bank-form form-group">
+            <div class="form-group">
+                <label for="bank-select">Select Bank</label>
+                <select id="bank-select" name="bank-select" required>
+                    <option value="">Choose Your Bank</option>
+                    <option value="sbi">State Bank of India</option>
+                    <option value="hdfc">HDFC Bank</option>
+                    <option value="icici">ICICI Bank</option>
+                    <option value="axis">Axis Bank</option>
+                    <option value="pnb">Punjab National Bank</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="account-number">Account Number</label>
+                <input type="text" id="account-number" name="account-number" required>
+            </div>
+            <div class="form-group">
+                <label for="net-banking-password">Net Banking Password</label>
+                <input type="password" id="net-banking-password" name="net-banking-password" required>
+            </div>
+            <button type="submit" class="payment-btn">Pay via Net Banking</button>
+        </form>
+    </div>
+
+    <script>
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const forms = {
+            'credit-card': document.getElementById('creditCardForm'),
+            'debit-card': document.getElementById('creditCardForm'),
+            'upi': document.getElementById('upiForm'),
+            'google-pay': document.getElementById('upiForm'),
+            'phone-pay': document.getElementById('upiForm'),
+            'paytm': document.getElementById('upiForm'),
+            'paypal': document.getElementById('upiForm'),
+            'fampay': document.getElementById('upiForm'),
+            'net-banking': document.getElementById('netBankingForm'),
+            'bank-transfer': document.getElementById('netBankingForm')
+        };
+
+        // Hide all forms initially
+        Object.values(forms).forEach(form => form.classList.remove('active-form'));
+
+        // Add click event to payment methods
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                // Remove selected class from all methods
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                
+                // Add selected class to clicked method
+                this.classList.add('selected');
+
+                // Hide all forms
+                Object.values(forms).forEach(form => form.classList.remove('active-form'));
+
+                // Show corresponding form
+                const methodType = this.getAttribute('data-method');
+                if (forms[methodType]) {
+                    forms[methodType].classList.add('active-form');
+                }
+            });
+        });
+
+        // Form submission handlers
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simulate payment processing
+                alert('Payment Successful! Thank you for booking with Arrow Ways.');
+                window.location.href = 'bookingconformpage.php';
+            });
+        });
+    </script>
+</body>
+</html>

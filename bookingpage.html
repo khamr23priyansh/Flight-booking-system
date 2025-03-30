@@ -1,0 +1,610 @@
+<?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header("Location: Registrationform.html");
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Flight - Arrow Ways</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0047AB;
+            --secondary-color: #4169E1;
+            --accent-color: #1E90FF;
+            --text-color: #333;
+            --light-text: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .booking-container {
+            max-width: 1000px;
+            margin: 100px auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        .form-group:last-child {
+            margin-right: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-flights {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-flights:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .flights-list {
+            margin-top: 30px;
+        }
+
+        .flight-card {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flight-details {
+            flex: 2;
+        }
+
+        .flight-price {
+            flex: 1;
+            text-align: right;
+        }
+
+        .book-flight-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .book-flight-btn:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Flight - Arrow Ways</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0047AB;
+            --secondary-color: #4169E1;
+            --accent-color: #1E90FF;
+            --text-color: #333;
+            --light-text: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-menu a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .navbar-menu a:hover {
+            color: #ddd;
+        }
+
+        .login-btn {
+            background-color: white;
+            color: var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            
+        }
+
+        .login-btn:hover {
+            background-color: #f6f2f2;
+            transform: translateY(-2px);
+        }
+
+        .booking-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .class-selection {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .class-btn {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: 2px solid var(--primary-color);
+            background-color: white;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .class-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        .form-group:last-child {
+            margin-right: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-flights {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-flights:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .flights-list {
+            margin-top: 30px;
+        }
+
+        .flight-card {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flight-logo {
+            max-width: 100px;
+            max-height: 50px;
+            margin-right: 15px;
+        }
+
+        .flight-details {
+            flex: 2;
+            display: flex;
+            align-items: center;
+        }
+
+        .flight-info {
+            margin-left: 15px;
+        }
+
+        .flight-price {
+            flex: 1;
+            text-align: right;
+        }
+
+        .book-flight-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .book-flight-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Airport Input Styles */
+        .airport-input {
+            display: flex;
+            align-items: center;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .airport-input input {
+            border: none;
+            background: transparent;
+            flex-grow: 1;
+        }
+
+        .airport-input i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-logo">Arrow Ways</div>
+        <div class="navbar-menu">
+            <a href="homepage.php">Home</a>
+            <a href="flight[age.php">Flight</a>
+            <a href="bookingpage.html">Booking</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <button class="login-btn">Login</button>
+    </nav>
+
+    <div class="booking-container">
+        <!-- Class Selection -->
+        <div class="class-selection">
+            <button class="class-btn active" data-class="economy">Economy</button>
+            <button class="class-btn" data-class="business">Business</button>
+        </div>
+
+        <form class="booking-form" id="flightSearchForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="departure">From</label>
+                    <div class="airport-input">
+                        <i class="fas fa-plane-departure"></i>
+                        <input type="text" id="departure" name="departure" placeholder="Enter Departure Airport" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="arrival">To</label>
+                    <div class="airport-input">
+                        <i class="fas fa-plane-arrival"></i>
+                        <input type="text" id="arrival" name="arrival" placeholder="Enter Arrival Airport" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="departure-date">Departure Date</label>
+                    <input type="date" id="departure-date" name="departure-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="passengers">Passengers</label>
+                    <select id="passengers" name="passengers">
+                        <option value="1">1 Passenger</option>
+                        <option value="2">2 Passengers</option>
+                        <option value="3">3 Passengers</option>
+                        <option value="4">4 Passengers</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="search-flights">Search Flights</button>
+        </form>
+
+        <div id="flightResults" class="flights-list" style="display: none;">
+            <!-- Flight results will be dynamically populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Class Selection Toggle
+        document.querySelectorAll('.class-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.class-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.getElementById('flightSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const departure = document.getElementById('departure').value;
+            const arrival = document.getElementById('arrival').value;
+            const date = document.getElementById('departure-date').value;
+            const passengers = document.getElementById('passengers').value;
+            const flightClass = document.querySelector('.class-btn.active').dataset.class;
+
+            const economyFlights = [
+                {
+                    id: 'AW001',
+                    airline: 'Arrow Airlines',
+                    logo: 'https://example.com/arrow-airlines-logo.png',
+                    departureTime: '08:00 AM',
+                    arrivalTime: '11:30 AM',
+                    price: 250 * passengers
+                },
+                {
+                    id: 'AW002',
+                    airline: 'Sky Voyager',
+                    logo: 'https://example.com/sky-voyager-logo.png',
+                    departureTime: '10:15 AM',
+                    arrivalTime: '01:45 PM',
+                    price: 275 * passengers
+                },
+                {
+                    id: 'AW003',
+                    airline: 'Global Express',
+                    logo: 'https://example.com/global-express-logo.png',
+                    departureTime: '02:30 PM',
+                    arrivalTime: '06:00 PM',
+                    price: 300 * passengers
+                }
+            ];
+
+            const businessFlights = [
+                {
+                    id: 'BW001',
+                    airline: 'Luxury Air',
+                    logo: 'https://example.com/luxury-air-logo.png',
+                    departureTime: '07:30 AM',
+                    arrivalTime: '11:00 AM',
+                    price: 750 * passengers
+                },
+                {
+                    id: 'BW002',
+                    airline: 'Premium Wings',
+                    logo: 'https://example.com/premium-wings-logo.png',
+                    departureTime: '11:45 AM',
+                    arrivalTime: '03:15 PM',
+                    price: 850 * passengers
+                },
+                {
+                    id: 'BW003',
+                    airline: 'Elite Travels',
+                    logo: 'https://example.com/elite-travels-logo.png',
+                    departureTime: '03:00 PM',
+                    arrivalTime: '06:30 PM',
+                    price: 900 * passengers
+                }
+            ];
+
+            const flights = flightClass === 'economy' ? economyFlights : businessFlights;
+
+            const flightResults = document.getElementById('flightResults');
+            flightResults.innerHTML = ''; // Clear previous results
+            flightResults.style.display = 'block';
+
+            flights.forEach(flight => {
+                const flightCard = document.createElement('div');
+                flightCard.classList.add('flight-card');
+                flightCard.innerHTML = `
+                    <div class="flight-details">
+                        <img src="${flight.logo}" alt="${flight.airline} Logo" class="flight-logo">
+                        <div class="flight-info">
+                            <h3>${flight.airline} - ${flight.id}</h3>
+                            <p>${departure} to ${arrival}</p>
+                            <p>Departure: ${flight.departureTime} | Arrival: ${flight.arrivalTime}</p>
+                        </div>
+                    </div>
+                    <div class="flight-price">
+                        <h4>$${flight.price}</h4>
+                        <button class="book-flight-btn" onclick="bookFlight('${flight.id}', ${flight.price}, '${flightClass}')">Book Flight</button>
+                    </div>
+                `;
+                flightResults.appendChild(flightCard);
+            });
+        });
+
+        function bookFlight(flightId, price, flightClass) {
+            // Redirect to payment page with flight details
+            window.location.href = `6[1].php?flightId=${flightId}&price=${price}&class=${flightClass}`;
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    <script>
+      
+            const flights = [
+                {
+                    id: 'AW001',
+                    airline: 'Arrow Airlines',
+                    departureTime: '08:00 AM',
+                    arrivalTime: '11:30 AM',
+                    price: 250 * passengers
+                },
+                {
+                    id: 'AW002',
+                    airline: 'Sky Voyager',
+                    departureTime: '10:15 AM',
+                    arrivalTime: '01:45 PM',
+                    price: 275 * passengers
+                },
+                {
+                    id: 'AW003',
+                    airline: 'Global Express',
+                    departureTime: '02:30 PM',
+                    arrivalTime: '06:00 PM',
+                    price: 300 * passengers
+                }
+            ];
+
+            const flightResults = document.getElementById('flightResults');
+            flightResults.innerHTML = ''; // Clear previous results
+            flightResults.style.display = 'block';
+
+            flights.forEach(flight => {
+                const flightCard = document.createElement('div');
+                flightCard.classList.add('flight-card');
+                flightCard.innerHTML = `
+                    <div class="flight-details">
+                        <h3>${flight.airline} - ${flight.id}</h3>
+                        <p>${departure} to ${arrival}</p>
+                        <p>Departure: ${flight.departureTime} | Arrival: ${flight.arrivalTime}</p>
+                    </div>
+                    <div class="flight-price">
+                        <h4>$${flight.price}</h4>
+                        <button class="book-flight-btn" onclick="bookFlight('${flight.id}', ${flight.price})">Book Flight</button>
+                    </div>
+                `;
+                flightResults.appendChild(flightCard);
+            });
+        ;
+
+        function bookFlight(flightId, price) {
+            // Redirect to payment page with flight details
+            window.location.href = `paymentpage.html?flightId=${flightId}&price=${price}`;
+        }
+    </script>
+</body>
+</html>
